@@ -1,0 +1,10 @@
+u A;
+u B;
+u C;
+u D;
+h A - D :h1;
+h A - C :h2;
+h B - D :h3;
+h A - B :h4;
+h B - C :h5;
+h C - D :h6;
