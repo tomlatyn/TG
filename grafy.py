@@ -49,26 +49,6 @@ class Graph:
         start = next(iter(self.vertices))
         dfs(start, visited)
         return len(visited) == len(self.vertices)
-    
-    def is_strongly_connected(self):
-        """Kontroluje silnou souvislost orientovaného grafu."""
-        if not self.is_directed():
-            return self.is_connected()
-
-        def dfs(vertex, visited, adj_list):
-            visited.add(vertex)
-            for edge in adj_list[vertex]:
-                if edge.to_node not in visited:
-                    dfs(edge.to_node, visited, adj_list)
-
-        # Pro každý vrchol zkontroluj, zda se dostaneme do všech ostatních
-        for start in self.vertices:
-            visited = set()
-            dfs(start, visited, self.adj_list)
-            if len(visited) != len(self.vertices):
-                return False
-
-        return True
 
     def is_simple(self):
         """Graf je prostý, pokud nemá rovnoběžné hrany."""
@@ -267,8 +247,8 @@ class Graph:
         matrix = [[0] * len(vertex_list) for _ in range(len(vertex_list))]
 
         print("\nMatice sousednosti:")
-        print(("   " + " ".join(vertex_list)))
-        print(("--+" + "--" * len(vertex_list)))
+        print("   " + " ".join(vertex_list))
+        print("--+" + "--" * len(vertex_list))
 
         for edge in self.edges:
             i = vertex_list.index(edge.from_node)
@@ -278,15 +258,15 @@ class Graph:
                 matrix[j][i] = 1
 
         for i, vertex in enumerate(vertex_list):
-            print((vertex + " |" + " ".join(str(matrix[i][j]) for j in range(len(vertex_list)))))
+            print(vertex + " |" + " ".join(str(matrix[i][j]) for j in range(len(vertex_list))))
 
     def print_sign_matrix(self):
         vertex_list = sorted(self.vertices)
         matrix = [['-'] * len(vertex_list) for _ in range(len(vertex_list))]
 
         print("\nZnaménková matice:")
-        print(("   " + " ".join(vertex_list)))
-        print(("--+" + "--" * len(vertex_list)))
+        print("   " + " ".join(vertex_list))
+        print("--+" + "--" * len(vertex_list))
 
         for edge in self.edges:
             i = vertex_list.index(edge.from_node)
@@ -296,7 +276,7 @@ class Graph:
                 matrix[j][i] = '+'
 
         for i, vertex in enumerate(vertex_list):
-            print((vertex + " |" + " ".join(matrix[i][j] for j in range(len(vertex_list)))))
+            print(vertex + " |" + " ".join(matrix[i][j] for j in range(len(vertex_list))))
 
     def print_incidence_matrix(self):
         vertex_list = sorted(self.vertices)
@@ -314,8 +294,8 @@ class Graph:
         max_edge_name_length = max(len(edge.name) for edge in sorted_edges)
 
         print("\nMatice incidence:")
-        print((" " * (max_edge_name_length + 2) + "|" + " ".join(edge.name.ljust(max_edge_name_length + 1) for edge in sorted_edges)))
-        print(("-" * (max_edge_name_length + 2) + "+" + "-" * (max_edge_name_length + 1) * len(sorted_edges)))
+        print(" " * (max_edge_name_length + 2) + "|" + " ".join(edge.name.ljust(max_edge_name_length + 1) for edge in sorted_edges))
+        print("-" * (max_edge_name_length + 2) + "+" + "-" * (max_edge_name_length + 1) * len(sorted_edges))
 
         for e, edge in enumerate(sorted_edges):
             from_index = vertex_list.index(edge.from_node)
@@ -328,7 +308,7 @@ class Graph:
                 matrix[to_index][e] = 1
 
         for i, vertex in enumerate(vertex_list):
-            print((vertex.ljust(max_edge_name_length) + "|" + " ".join(str(matrix[i][j]).rjust(max_edge_name_length + 1) for j in range(len(sorted_edges)))))
+            print(vertex.ljust(max_edge_name_length) + "|" + " ".join(str(matrix[i][j]).rjust(max_edge_name_length + 1) for j in range(len(sorted_edges))))
 
     def print_distance_matrix(self):
         INF = "*"  # Použijeme text místo nekonečna
@@ -357,7 +337,7 @@ class Graph:
         print(header)
 
         # Oddělovač
-        print(("---+" + "-" * (column_width * len(vertex_list))))
+        print("---+" + "-" * (column_width * len(vertex_list)))
 
         # Řádky matice
         for i, vertex in enumerate(vertex_list):
@@ -370,50 +350,31 @@ class Graph:
                 row += val.rjust(column_width)
             print(row)
 
-    def print_previous_list(self):
-        print()
-        print("Seznam predchudcu:")
-        # For each vertex, find all vertices that have edges pointing to it
+
+    def print_neighbor_list(self):
+        # print
+        print("Seznam sousedu:")
         for v in sorted(self.vertices):
-            # Find all edges where this vertex is the destination
-            predecessors = []
-            for vertex in self.vertices:
-                for edge in self.adj_list[vertex]:
-                    if edge.to_node == v:
-                        predecessors.append(vertex)
-            # Sort predecessors for consistent output
-            predecessors.sort()
-            print("%s: %s" % (v, ' '.join(predecessors)))
-         
-    def print_successor_list(self):
-        print()
-        print("Seznam nasledovniku:")
-        for v in sorted(self.vertices):
-            # Get all vertices that this vertex points to through outgoing edges
-            successors = []
-            for edge in self.adj_list[v]:
-                successors.append(edge.to_node)
-            # Sort successors for consistent output
-            successors.sort()
-            print("%s: %s" % (v, ' '.join(successors)))
+            neighbors = ' '.join(edge.to_node for edge in self.adj_list[v])
+            print("%s: %s" % (v, neighbors))
 
     def print_vertices_and_edges(self):
-        print()
+        print
         print("Seznam uzlu: " + " ".join(sorted(self.vertices)))
-    
+
         def edge_sort_key(name):
             number = ''.join(filter(str.isdigit, name))
             return int(number)
-    
+
         sorted_edges = sorted(self.edges, key=lambda edge: edge_sort_key(edge.name))
-    
-        print()
+
+        print
         print("Seznam hran:")
         for edge in sorted_edges:
             print("%s: %s -> %s (delka: %s)" % (edge.name, edge.from_node, edge.to_node, edge.weight))
 
     def print_incident_edges_table(self):
-        print()
+        print
         print("Tabulka incidentnich uzlu a hran:")
         print("Uzel | Incidentni hrany")
         print("-----------------------")
@@ -442,191 +403,13 @@ class Graph:
                 if i != j and dist[i][j] != INF:
                     pred[i][j] = vertex_list[i]
 
-        print()
+        print
         print("Matice predchudcu:")
         print("   " + " ".join(vertex_list))
         print("--+" + "--" * len(vertex_list))
 
         for i, vertex in enumerate(vertex_list):
             print(vertex + " |" + " ".join(pred[i][j] for j in range(len(vertex_list))))
-
-    def matrix_multiply(self, matrix1, matrix2):
-        """Násobení dvou matic"""
-        rows1 = len(matrix1)
-        cols1 = len(matrix1[0])
-        cols2 = len(matrix2[0])
-
-        result = [[0 for _ in range(cols2)] for _ in range(rows1)]
-
-        for i in range(rows1):
-            for j in range(cols2):
-                for k in range(cols1):
-                    result[i][j] += matrix1[i][k] * matrix2[k][j]
-
-        return result
-
-    def get_adjacency_matrix_power(self, power):
-        """Vypočítá n-tou mocninu matice sousednosti"""
-        vertex_list = sorted(self.vertices)
-        n = len(vertex_list)
-        
-        # Vytvoření matice sousednosti
-        matrix = [[0] * n for _ in range(n)]
-        for edge in self.edges:
-            i = vertex_list.index(edge.from_node)
-            j = vertex_list.index(edge.to_node)
-            matrix[i][j] = 1
-            if not edge.directed:
-                matrix[j][i] = 1
-        
-        # Výpočet mocniny násobením matic
-        result = matrix
-        for _ in range(power - 1):
-            result = self.matrix_multiply(result, matrix)
-        
-        return result, vertex_list
-
-    def print_adjacency_matrix_power(self, power):
-        """Vytiskne n-tou mocninu matice sousednosti"""
-        result, vertex_list = self.get_adjacency_matrix_power(power)
-        
-        print(f"\nMatice sousednosti na {power}. mocninu:")
-        print("   " + " ".join(vertex_list))
-        print("--+" + "--" * len(vertex_list))
-        
-        for i, vertex in enumerate(vertex_list):
-            row = vertex + " |" + " ".join(str(result[i][j]) for j in range(len(vertex_list)))
-            print(row)
-
-    def get_matrix_determinant(self, matrix):
-        """Vypočítá determinant matice rekurzivně pomocí rozvoje podle prvního řádku"""
-        n = len(matrix)
-        
-        # Pro 1x1 matici
-        if n == 1:
-            return matrix[0][0]
-        
-        # Pro 2x2 matici
-        if n == 2:
-            return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
-        
-        determinant = 0
-        # Rozvoj podle prvního řádku
-        for j in range(n):
-            # Vytvoření podmatice
-            submatrix = []
-            for i in range(1, n):
-                row = []
-                for k in range(n):
-                    if k != j:
-                        row.append(matrix[i][k])
-                submatrix.append(row)
-            
-            # Přičtení členu k determinantu
-            sign = (-1) ** j
-            determinant += sign * matrix[0][j] * self.get_matrix_determinant(submatrix)
-        
-        return determinant
-
-    def get_laplacian_matrix(self):
-        """Vytvoří Laplaceovu matici"""
-        vertex_list = sorted(self.vertices)
-        n = len(vertex_list)
-        
-        # Vytvoření matice sousednosti
-        adj_matrix = [[0] * n for _ in range(n)]
-        for edge in self.edges:
-            i = vertex_list.index(edge.from_node)
-            j = vertex_list.index(edge.to_node)
-            adj_matrix[i][j] = 1
-            if not edge.directed:
-                adj_matrix[j][i] = 1
-        
-        # Vytvoření Laplaceovy matice
-        laplacian = [[0] * n for _ in range(n)]
-        for i in range(n):
-            # Diagonální prvky jsou stupně vrcholů
-            degree = sum(adj_matrix[i])
-            laplacian[i][i] = degree
-            # Mimodiagonální prvky jsou záporné hodnoty z matice sousednosti
-            for j in range(n):
-                if i != j:
-                    laplacian[i][j] = -adj_matrix[i][j]
-        
-        # Výpočet determinantu
-        determinant = self.get_matrix_determinant(laplacian)
-        
-        return laplacian, vertex_list, determinant
-
-    def print_laplacian_matrix(self):
-        """Vytiskne Laplaceovu matici"""
-        laplacian, vertex_list, determinant = self.get_laplacian_matrix()
-        n = len(vertex_list)
-        
-        # Pro každý sloupec najít maximální šířku čísla
-        col_widths = []
-        for j in range(n):
-            col_width = max(len(str(abs(laplacian[i][j]))) for i in range(n))
-            col_width = max(col_width + 1, len(vertex_list[j]))  # +1 pro mínus
-            col_widths.append(col_width)
-
-        print("\nLaplaceova matice:")
-        # Hlavička
-        header = "    " + " ".join(vertex.ljust(col_widths[i]) for i, vertex in enumerate(vertex_list))
-        print(header)
-        print("--+" + "-" * (len(header) - 3))  # -3 pro "   "
-        
-        # Řádky matice
-        for i, vertex in enumerate(vertex_list):
-            values = [str(laplacian[i][j]).rjust(col_widths[j]) for j in range(n)]
-            row = vertex + " |" + " ".join(values)
-            print(row)
-
-        # Pro stromy platí, že determinant kofaktoru je roven počtu koster grafu
-        if n > 1:
-            submatrix = [row[:-1] for row in laplacian[:-1]]
-            cofactor = self.get_matrix_determinant(submatrix)
-            print(" ")
-            print(f"Determinant: {cofactor}")
-            if cofactor > 0:
-                print(f"Počet koster grafu: {cofactor}")
-
-    def get_in_degree(self, vertex):
-        """Vrátí vstupní stupeň vrcholu (počet hran směřujících do vrcholu)"""
-        return sum(1 for edge in self.edges if edge.to_node == vertex)
-    
-    def get_out_degree(self, vertex):
-        """Vrátí výstupní stupeň vrcholu (počet hran vycházejících z vrcholu)"""
-        return sum(1 for edge in self.edges if edge.from_node == vertex)
-    
-    def print_vertex_degree(self):
-        """Vytiskne vstupní a výstupní stupně všech vrcholů"""
-        print("\nStupně vrcholů:")
-        print("Vrchol | Vstupní | Výstupní")
-        print("-------------------------")
-        for v in sorted(self.vertices):
-            in_deg = self.get_in_degree(v)
-            out_deg = self.get_out_degree(v)
-            print(f"{v:6} | {in_deg:8} | {out_deg:9}")
-
-    def get_input_neighborhood(self, vertex):
-        """Vrátí množinu vrcholů, ze kterých vede hrana do daného vrcholu"""
-        return {edge.from_node for edge in self.edges if edge.to_node == vertex}
-    
-    def get_output_neighborhood(self, vertex):
-        """Vrátí množinu vrcholů, do kterých vede hrana z daného vrcholu"""
-        return {edge.to_node for edge in self.edges if edge.from_node == vertex}
-
-    def print_neighborhoods(self):
-        """Vytiskne vstupní a výstupní okolí všech vrcholů"""
-        print("\nOkolí vrcholů:")
-        for v in sorted(self.vertices):
-            in_neigh = sorted(self.get_input_neighborhood(v))
-            out_neigh = sorted(self.get_output_neighborhood(v))
-            print(f"Vrchol {v}:")
-            print(f"  Vstupní okolí:  {' '.join(in_neigh)}")
-            print(f"  Výstupní okolí: {' '.join(out_neigh)}")
-
 
 def parse_graph_from_file(filename):
     with open(filename, 'r') as file:
@@ -692,39 +475,29 @@ def parse_graph_from_file(filename):
     return graph
     
 if __name__ == "__main__":
-    graph = parse_graph_from_file("data2.txt")
+    graph = parse_graph_from_file("grafy/01.tg")
     
-    print("\n")
+    print("")
+    print("")
     print("=======================================================================================")
     print("VLASTNOSTI GRAFŮ:")
-    print(("1) Ohodnocený:  {0}".format('ANO' if graph.is_weighted() else 'NE')))
-    print(("2) Orientovaný: {0}".format('ANO' if graph.is_directed() else 'NE')))
-    print(("3) Souvislý:    {0}".format('ANO' if (not graph.is_directed() and graph.is_connected()) or 
-                                          (graph.is_directed() and graph.is_strongly_connected()) 
-                                   else 'NE')))
-    print(("4) Prostý:      {0}".format('ANO' if graph.is_simple() else 'NE')))
-    print(("5) Jednoduchý:  {0}".format('ANO' if graph.is_elementary() else 'NE')))
-    print(("6) Konečný:     {0}".format('ANO' if graph.is_finite() else 'NE')))
-    print(("7) Úplný:       {0}".format('ANO' if graph.is_complete() else 'NE')))
-    print(("8) Regulární:   {0}".format('ANO' if graph.is_regular() else 'NE')))
-    print(("9) Bipartitní:  {0}".format('ANO' if graph.is_bipartite() else 'NE')))
-    
-    # Základní charakteristiky
-    graph.print_vertex_degree()  # Vstupní/výstupní stupně
-    graph.print_neighborhoods()   # Vstupní/výstupní okolí
-    graph.print_previous_list()   # Předchůdci
-    graph.print_successor_list()  # Následníci
-    
-    # Matice
+    print("1) Ohodnocený:  {0}".format('ANO' if graph.is_weighted() else 'NE'))
+    print("2) Orientovaný: {0}".format('ANO' if graph.is_directed() else 'NE'))
+    print("3) Souvislý:    {0}".format('ANO' if graph.is_connected() else 'NE'))
+    print("4) Prostý:      {0}".format('ANO' if graph.is_simple() else 'NE'))
+    print("5) Jednoduchý:  {0}".format('ANO' if graph.is_elementary() else 'NE'))
+    print("6) Konečný:     {0}".format('ANO' if graph.is_finite() else 'NE'))
+    print("7) Úplný:       {0}".format('ANO' if graph.is_complete() else 'NE'))
+    print("8) Regulární:   {0}".format('ANO' if graph.is_regular() else 'NE'))
+    print("9)Bipartitní:  {0}".format('ANO' if graph.is_bipartite() else 'NE'))
     print("\nMATICE:")
+
     graph.print_adjacency_matrix()
-    graph.print_adjacency_matrix_power(2)  # Mocnina matice sousednosti
     graph.print_sign_matrix()
     graph.print_incidence_matrix()
     graph.print_distance_matrix()
     graph.print_predecessor_matrix()
-    graph.print_laplacian_matrix()
-    
-    # Seznamy a tabulky
+    graph.print_neighbor_list()
     graph.print_vertices_and_edges()
     graph.print_incident_edges_table()
+
