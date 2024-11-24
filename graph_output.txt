@@ -1,0 +1,110 @@
+
+
+=======================================================================================
+VLASTNOSTI GRAFŮ:
+1) Ohodnocený:  ANO
+2) Orientovaný: ANO
+3) Souvislý:    ANO
+4) Prostý:      ANO
+5) Jednoduchý:  ANO
+6) Konečný:     ANO
+7) Úplný:       NE
+8) Regulární:   NE
+9) Bipartitní:  NE
+
+MATICE:
+
+Matice sousednosti:
+   A B C D E F G H
+--+----------------
+A |0 1 0 1 0 0 0 0
+B |0 0 1 0 0 0 0 0
+C |0 0 0 0 1 1 0 0
+D |0 0 0 0 1 0 0 0
+E |1 1 0 0 0 1 1 0
+F |0 0 0 0 0 0 0 1
+G |0 0 0 1 0 0 0 0
+H |0 0 0 0 1 0 1 0
+
+Znaménková matice:
+   A B C D E F G H
+--+----------------
+A |- + - + - - - -
+B |- - + - - - - -
+C |- - - - + + - -
+D |- - - - + - - -
+E |+ + - - - + + -
+F |- - - - - - - +
+G |- - - + - - - -
+H |- - - - + - + -
+
+Matice incidence:
+     |h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14 
+-----+--------------------------------------------------------
+A  |   1    0    1   -1    0    0    0    0    0    0    0    0    0    0
+B  |  -1    1    0    0   -1    0    0    0    0    0    0    0    0    0
+C  |   0   -1    0    0    0    1    1    0    0    0    0    0    0    0
+D  |   0    0   -1    0    0    0    0    1    0   -1    0    0    0    0
+E  |   0    0    0    1    1   -1    0   -1    1    0    1   -1    0    0
+F  |   0    0    0    0    0    0   -1    0   -1    0    0    0    1    0
+G  |   0    0    0    0    0    0    0    0    0    1   -1    0    0   -1
+H  |   0    0    0    0    0    0    0    0    0    0    0    1   -1    1
+
+Matice delek:
+   |A B C D E F G H 
+---+----------------
+A | 0 1 * 2 * * * *
+B | * 0 1 * * * * *
+C | * * 0 * 3 4 * *
+D | * * * 0 4 * * *
+E | 2 3 * * 0 5 6 *
+F | * * * * * 0 * 7
+G | * * * 5 * * 0 *
+H | * * * * 6 * 7 0
+Matice predchudcu:
+   A B C D E F G H
+--+----------------
+A |- A - A - - - -
+B |- - B - - - - -
+C |- - - - C C - -
+D |- - - - D - - -
+E |E E - - - E E -
+F |- - - - - - - F
+G |- - - G - - - -
+H |- - - - H - H -
+Seznam sousedu:
+A: B D
+B: C
+C: E F
+D: E
+E: A B F G
+F: H
+G: D
+H: E G
+Seznam uzlu: A B C D E F G H
+Seznam hran:
+h1: A -> B (delka: 1)
+h2: B -> C (delka: 1)
+h3: A -> D (delka: 2)
+h4: E -> A (delka: 2)
+h5: E -> B (delka: 3)
+h6: C -> E (delka: 3)
+h7: C -> F (delka: 4)
+h8: D -> E (delka: 4)
+h9: E -> F (delka: 5)
+h10: G -> D (delka: 5)
+h11: E -> G (delka: 6)
+h12: H -> E (delka: 6)
+h13: F -> H (delka: 7)
+h14: H -> G (delka: 7)
+Tabulka incidentnich uzlu a hran:
+Uzel | Incidentni hrany
+-----------------------
+A      | h1 h3 h4
+B      | h1 h2 h5
+C      | h2 h6 h7
+D      | h3 h8 h10
+E      | h4 h5 h6 h8 h9 h11 h12
+F      | h7 h9 h13
+G      | h10 h11 h14
+H      | h12 h13 h14
