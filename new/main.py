@@ -3,6 +3,8 @@ from contextlib import redirect_stdout
 
 from grafy import *
 
+# ssh -oHostKeyAlgorithms=+ssh-dss login@akela.mendelu.cz
+
 class FileAndConsoleWriter:
     def __init__(self, filename):
         self.terminal = sys.stdout
@@ -88,7 +90,7 @@ def main():
         # Matice incidence
         print("\nMatice incidence:")
         matice_inc, uzly_inc = matice_incidence(uzly, hrany)
-        vypis_matice_incidence(matice_inc, uzly_inc, hrany)
+        #vypis_matice_incidence(matice_inc, uzly_inc, hrany)
         vypocet_poctu_hodnot_incidence(matice_inc)
 
         # Matice sousednosti
