@@ -329,10 +329,14 @@ def vypocet_poctu_hodnot_incidence(matice):
     pocet_jednicek = sum(hodnota == 1 for radky in matice.values() for hodnota in radky)
     pocet_dvojek = sum(hodnota == 2 for radky in matice.values() for hodnota in radky)
     pocet_minus_jednicek = sum(hodnota == -1 for radky in matice.values() for hodnota in radky)
+    hodnoty_na_hlavni_diagonale = [matice[uzel][i] for i, uzel in enumerate(matice)]
+    hodnoty_na_vedlejsi_diagonale = [matice[uzel][i] for i, uzel in enumerate(reversed(matice))]
     print(f"\nPočet nul v matici incidence: {pocet_nul}")
     print(f"Počet jedniček v matici incidence: {pocet_jednicek}")
     print(f"Počet mínus jedniček v matici incidence: {pocet_minus_jednicek}")
     print(f"Počet dvojek (smyček) v matici incidence: {pocet_dvojek}")
+    print(f"Hodnoty na hlavní diagonále: {hodnoty_na_hlavni_diagonale}")
+    print(f"Hodnoty na vedlejší diagonále: {hodnoty_na_vedlejsi_diagonale}")	
 
 ####### START: MATICE SOUSEDNOSTI
 
